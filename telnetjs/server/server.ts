@@ -1,6 +1,6 @@
 import * as net from 'net'
 import * as WebSocket from 'ws'
-import { TcpData, TcpConfig, TcpHost, TcpPort } from './types'
+import { WS, TCP } from './types'
 
 const createServer = (wsPort: number): WebSocket.Server =>
   new WebSocket.Server({
@@ -10,18 +10,25 @@ const createServer = (wsPort: number): WebSocket.Server =>
 class TcpProxyClient {
   ws: WebSocket
   tcpSocket?: net.Socket
-  tcpConfig: TcpConfig
+  tcpConfig: TCP.Config
 
-  constructor(ws: WebSocket, tcpHost: TcpHost) {
+  constructor(ws: WebSocket, tcpHost: TCP.Host) {
     this.ws = ws
     this.tcpConfig = {
       host: tcpHost
     }
 
-    this.ws.on('configure_tcp', this.configureTcp)
+    this.ws.on('message', this.handleWsEvent)
   }
 
-  configureTcp(tcpPort: TcpPort) {
+  handleWsEvent(event: WS.InboundEvent) {
+  }
+
+  emitWsEvent(event: WS.OutboundEvent) {
+    this.ws.send(event)
+  }
+
+  configureTcp(tcpPort: TCP.Port) {
     this.tcpConfig.port = tcpPort
 
     // https://nodejs.org/api/net.html#net_net_createconnection
@@ -33,23 +40,23 @@ class TcpProxyClient {
   }
 
   handleTcpCxnReady() {
-    this.ws.send({ event: 'tcp_ready' })
+    this.emitWsEvent({ event: 'tcp_ready' })
   }
 
   // https://nodejs.org/api/net.html#net_event_data
-  handleTcpRecvData(data: TcpData) {
-    this.ws.send({ event: 'data', data: data.toString() })
+  handleTcpRecvData(data: TCP.Data) {
+    this.emitWsEvent({ event: 'data', data: data.toString() })
   }
 
   // https://nodejs.org/api/net.html#net_event_error_1
   handleTcpRecvError(error: Error) {
     console.trace(error)
-    this.ws.send({ event: 'tcp_connection_error' })
+    this.emitWsEvent({ event: 'tcp_cxn_error' })
   }
 
   // https://nodejs.org/api/net.html#net_event_close_1
   handleTcpRecvClose(hadError: boolean) {
     console.trace({ hadError })
-    this.ws.send({ event: 'tcp_connection_close' })
+    this.emitWsEvent({ event: 'tcp_cxn_close' })
   }
 }

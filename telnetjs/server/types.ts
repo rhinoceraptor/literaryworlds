@@ -1,10 +1,19 @@
+import { WebSocketEvents } from '../common/types'
 
-export type TcpHost = string
-export type TcpPort = number
+export namespace TCP {
+  export type Host = string
+  export type Port = number
 
-export type TcpConfig = {
-  host: TcpHost,
-  port?: TcpPort
+  export type Config = {
+    host: Host,
+    port?: Port
+  }
+
+  export type Data = Buffer | string
 }
 
-export type TcpData = Buffer | string
+export namespace WS {
+  export type OutboundEvent = WebSocketEvents.ServerToClient
+  export type InboundEvent = WebSocketEvents.ClientToServer
+}
+
