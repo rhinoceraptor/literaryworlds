@@ -6,7 +6,7 @@ export namespace TCP {
 
   export type Config = {
     host: Host,
-    port?: Port
+    port: Port
   }
 
   export type Data = Buffer | string
