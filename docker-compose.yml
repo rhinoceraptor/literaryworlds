@@ -1,0 +1,12 @@
+version: '3'
+services:
+  lambdamoo:
+    build: lambdamoo
+    command:
+  nginx:
+    build: nginx
+    ports:
+      - "80:80"
+  telnetjs:
+    build: telnetjs
+
