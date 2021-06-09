@@ -1,13 +1,28 @@
 
 export namespace WebSocketEvents {
-  export type ServerToClient = {
-    type: 'tcp_ready' | 'data' | 'tcp_cxn_error' | 'tcp_cxn_close',
-    data?: string
+  export type Event = {
+    type: string
   }
 
-  export type ClientToServer = {
+  export type TcpReadyEvent = Event & {
+    type: 'tcp_ready'
+  }
+
+  export type DataEvent = Event & {
     type: 'data',
     data: string
   }
+
+  export type TcpCxnErrorEvent = Event & {
+    type: 'tcp_cxn_error'
+  }
+
+  export type TcpCxnCloseEvent = Event & {
+    type: 'tcp_cxn_close'
+  }
+
+  export type ServerToClient = TcpReadyEvent | DataEvent | TcpCxnErrorEvent | TcpCxnCloseEvent
+
+  export type ClientToServer = DataEvent
 }
 

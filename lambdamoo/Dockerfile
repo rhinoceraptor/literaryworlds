@@ -15,4 +15,7 @@ RUN chmod +x moo
 FROM alpine
 WORKDIR lambdamoo
 COPY --from=lambdamoo_build lambdamoo/moo .
+
+# A LambdaMOO DB is required, override this entrypoint with the path to the DB
+# mounted in as a volume
 ENTRYPOINT ['./moo']
