@@ -8,12 +8,12 @@ services:
       - "telnetjs:telnetjs"
     # TODO don't expose enCore.db to the nginx container
     volumes:
-      - "./encore:/encore"
-      - "./nginx/nginx.conf.template:/etc/nginx/nginx.conf"
+      - "./encore:/webroot/encore"
     environment:
       WEBSOCKET_LISTEN_PORT: 8080
-      NGINX_PORT: 4000
-    command: ["/bin/sh", "-c", "\"envsubst /etc/nginx/nginx.conf.template > /etc/nginx/nginx.conf && nginx -g 'daemon off;'\""]
+      ENCORE_HTTP_PORT: 7000
+      NGINX_PORT: 80
+    command: ["./start.sh"]
   lambdamoo:
     build: lambdamoo
     volumes:
