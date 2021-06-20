@@ -1,5 +1,5 @@
-import * as WebSocket from 'ws'
-import { TCP } from './types'
+import WebSocket from 'ws'
+import { TCP } from '../common/types'
 import { ProxyClient } from './proxy-client'
 
 const tcpConfig: TCP.Config = {

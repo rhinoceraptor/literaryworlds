@@ -1,6 +1,6 @@
 import * as net from 'net'
-import * as WebSocket from 'ws'
-import { WS, TCP } from './types'
+import WebSocket from 'ws'
+import { WS, TCP } from '../common/types'
 
 export class ProxyClient {
   ws: WebSocket
@@ -25,43 +25,43 @@ export class ProxyClient {
     this.ws.on('message', this.handleWsEvent)
   }
 
-  handleWsEvent(event: WS.InboundEvent) {
+  handleWsEvent(event: WS.InboundEvent): void {
     switch(event.type) {
       case 'data':
         return this.handleWsData(event.data.toString())
     }
   }
 
-  handleWsData(data: string) {
+  handleWsData(data: string): void {
     this.tcpSocket?.write(data + '\r\n')
   }
 
-  emitWsEvent(event: WS.OutboundEvent) {
+  emitWsEvent(event: WS.OutboundEvent): void {
     this.ws.send(event)
   }
 
-  handleTcpCxnReady() {
+  handleTcpCxnReady(): void {
     this.emitWsEvent({ type: 'tcp_ready' })
   }
 
   // https://nodejs.org/api/net.html#net_event_data
-  handleTcpRecvData(data: TCP.Data) {
+  handleTcpRecvData(data: TCP.Data): void {
     this.emitWsEvent({ type: 'data', data: data.toString() })
   }
 
   // https://nodejs.org/api/net.html#net_event_error_1
-  handleTcpRecvError(error: Error) {
+  handleTcpRecvError(error: Error): void {
     console.trace(error)
     this.emitWsEvent({ type: 'tcp_cxn_error' })
   }
 
   // https://nodejs.org/api/net.html#net_event_close_1
-  handleTcpRecvClose(hadError: boolean) {
+  handleTcpRecvClose(hadError: boolean): void {
     console.trace({ hadError })
     this.emitWsEvent({ type: 'tcp_cxn_close' })
   }
 
-  destroy() {
+  destroy(): void {
     this.tcpSocket?.destroy()
   }
 }
