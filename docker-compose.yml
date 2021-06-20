@@ -1,19 +1,21 @@
 version: '3'
 services:
   nginx:
-    build: nginx
+    image: nginx:1.21.0-alpine
     ports:
       - "80:80"
     links:
       - "telnetjs:telnetjs"
-    # TODO don't expose enCore.db to the nginx container
+      - "lambdamoo:lambdamoo"
     volumes:
       - "./encore:/webroot/encore"
+      - "./nginx/templates:/etc/nginx/templates/"
     environment:
-      WEBSOCKET_LISTEN_PORT: 8080
+      WEBSOCKET_HOST: telnetjs
+      WEBSOCKET_PORT: 8080
+      LAMBDAMOO_HOST: lambdamoo
       ENCORE_HTTP_PORT: 7000
       NGINX_PORT: 80
-    command: ["./start.sh"]
   lambdamoo:
     build: lambdamoo
     volumes:

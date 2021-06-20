@@ -9,3 +9,4 @@ EXPOSE 8000
 COPY . .
 RUN npm run-script build
 
+CMD node server/index.js

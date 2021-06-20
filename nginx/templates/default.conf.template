@@ -1,0 +1,23 @@
+server {
+  listen ${NGINX_PORT};
+
+  # enCore dynamic content reverse proxy
+  location / {
+    proxy_pass http://${LAMBDAMOO_HOST}:${ENCORE_HTTP_PORT};
+  }
+
+  # enCore static content
+  location /encore/ {
+    root /webroot;
+  }
+
+  # Websocket reverse proxy
+  location /ws/ {
+    proxy_pass http://${WEBSOCKET_HOST}:${WEBSOCKET_PORT};
+    proxy_http_version 1.1;
+    proxy_set_header Upgrade $http_upgrade;
+    proxy_set_header Connection "Upgrade";
+    proxy_set_header Host $host;
+    proxy_read_timeout 86400;
+  }
+}
