@@ -10,7 +10,6 @@ export class MockTcpServer {
     this.clients = []
     this.server = net.createServer((client: net.Socket) => {
       this.clients.push(client)
-      console.log('client connected')
     })
 
     this.server.listen(tcpConfig.port)

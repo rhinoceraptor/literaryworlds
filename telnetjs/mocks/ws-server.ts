@@ -1,34 +1,48 @@
 import WebSocket from 'ws'
-import { promisify } from 'bluebird'
 import { identity } from 'ramda'
 
+type TransformMessageFunction = (message: string) => string
+
 export class MockWsServer {
-  server: WebSocket.Server
+  port: number
+  transformMessage: TransformMessageFunction
+  server?: WebSocket.Server
   clients: Array<WebSocket>
   recvdMessages: Array<string>
   sentMessages: Array<string>
 
-  constructor(port: number, respondToMessages = identity) {
-    this.server = new WebSocket.Server({ port })
+  constructor(port: number, transformMessage = identity) {
+    this.port = port
+    this.transformMessage = transformMessage
     this.clients = []
     this.recvdMessages = []
     this.sentMessages = []
+  }
 
-    this.server.on('connection', (ws: WebSocket) => {
-      this.clients.push(ws)
+  init(): Promise<void> {
+    return new Promise((resolve) => {
+      this.server = new WebSocket.Server({ port: this.port })
 
-      ws.on('message', (message: string) => {
-        this.recvdMessages.push(message)
-        const response = respondToMessages(message)
-        this.sentMessages.push(response)
-        ws.send(response)
+      this.server.on('listening', () => resolve())
+
+      this.server.on('connection', (ws: WebSocket) => {
+        this.clients.push(ws)
+
+        ws.on('message', (message: string) => {
+          this.recvdMessages.push(message)
+          const response = this.transformMessage(message)
+          this.sentMessages.push(response)
+          ws.send(response)
+        })
       })
     })
   }
 
   destroy(): Promise<void> {
-    this.clients.forEach((client: WebSocket) => client.close())
-    return promisify(this.server.close, { context: this.server })()
+    return new Promise((resolve) => {
+      this.clients.forEach((client: WebSocket) => client.close())
+      this.server?.close(() => resolve())
+    })
   }
 }
 

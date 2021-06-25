@@ -21,7 +21,11 @@ export namespace WebSocketEvents {
     type: 'tcp_cxn_close'
   }
 
-  export type ServerToClient = TcpReadyEvent | DataEvent | TcpCxnErrorEvent | TcpCxnCloseEvent
+  export type InvalidJsonMessage = Event & {
+    type: 'invalid_json_message'
+  }
+
+  export type ServerToClient = TcpReadyEvent | DataEvent | TcpCxnErrorEvent | TcpCxnCloseEvent | InvalidJsonMessage
 
   export type ClientToServer = DataEvent
 }
