@@ -35,6 +35,12 @@ export class ProxyClient {
     })
   }
 
+  init(): Promise<void> {
+    return new Promise(resolve => {
+      this.tcpSocket?.on('ready', () => resolve())
+    })
+  }
+
   handleWsEvent(event: WS.InboundEvent): void {
     switch(event.type) {
       case 'data':
