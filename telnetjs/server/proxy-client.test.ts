@@ -1,16 +1,10 @@
-import WebSocket from 'ws'
-import { waitUntil } from 'async-wait-until'
 import { last } from 'ramda'
 import { TCP } from '../common/types'
 import { ProxyClient } from './proxy-client'
+import { waitUntil } from '../mocks/wait-until'
 import { MockWsServer } from '../mocks/ws-server'
 import { MockWsClient } from '../mocks/ws-client'
 import { MockTcpServer } from '../mocks/tcp-server'
-
-const delayFor = (ms: number): Promise<void> =>
-  new Promise(resolve => setTimeout(() => {
-    resolve()
-  }, ms))
 
 describe('ProxyClient', () => {
   let tcpConfig: TCP.Config
@@ -60,7 +54,6 @@ describe('ProxyClient', () => {
     wsClient.send({ type: 'data', data: 'Hello, world!' })
     await waitUntil(() => tcpServer.receivedMessages.length > 0)
     const message = last(tcpServer.receivedMessages) || ''
-    console.log(message)
     expect(message).toEqual('Hello, world!\r\n')
   })
 })

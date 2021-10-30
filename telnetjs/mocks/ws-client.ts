@@ -9,7 +9,7 @@ export class MockWsClient {
     this.receivedMessages = []
     this.client = new WebSocket(`ws://localhost:${port}`)
     this.client.on('message', (message: string) => {
-      this.receivedMessages.push(message)
+      this.receivedMessages = [...this.receivedMessages, message];
     })
   }
 
