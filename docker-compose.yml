@@ -32,4 +32,5 @@ services:
       TCP_HOST: lambdamoo
       TCP_PORT: 7777
       WEBSOCKET_LISTEN_PORT: 8080
+      WEBSOCKET_HOST: '172.30.186.191'
 

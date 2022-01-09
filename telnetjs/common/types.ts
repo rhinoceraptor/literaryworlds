@@ -46,3 +46,13 @@ export namespace WS {
   export type OutboundEvent = WebSocketEvents.ServerToClient
   export type InboundEvent = WebSocketEvents.ClientToServer
 }
+
+export namespace Moo {
+  export type Params = {
+    mooname: string,
+    autologin: boolean,
+    font?: string,
+    fontsize?: number,
+    localecho: boolean
+  }
+}

@@ -6,5 +6,10 @@ module.exports = {
   testEnvironment: 'node',
   transform: {
     '^.+\\.tsx?$': 'ts-jest'
-  }
+  },
+  collectCoverageFrom: [
+    "**/*.{js,jsx}",
+    "!**/node_modules/**"
+  ],
+  coverageReporters: ['json', 'html']
 }
