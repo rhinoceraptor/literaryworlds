@@ -3,12 +3,14 @@ import WebSocket from 'ws'
 import { WS, TCP } from '../common/types'
 
 export class ProxyClient {
+  id: string
   ws: WebSocket
   tcpSocket?: net.Socket
   tcpConfig: TCP.Config
   destroyed: boolean
 
-  constructor(ws: WebSocket, tcpConfig: TCP.Config) {
+  constructor(id: string, ws: WebSocket, tcpConfig: TCP.Config) {
+    this.id = id
     this.ws = ws
     this.tcpConfig = tcpConfig
     this.destroyed = false
@@ -32,6 +34,16 @@ export class ProxyClient {
         console.trace({ incomingWsError: error })
         this.emitWsEvent({ type: 'invalid_json_message' })
       }
+    })
+
+    this.ws.on('error', (wsClientErrorEvent: WebSocket.ErrorEvent) => {
+      console.trace({ wsClientErrorEvent })
+      this.destroy()
+    })
+
+    this.ws.on('close', (wsClientCloseEvent: WebSocket.CloseEvent) => {
+      console.log({ wsClientCloseEvent })
+      this.destroy()
     })
   }
 
@@ -82,6 +94,7 @@ export class ProxyClient {
   }
 
   destroy(): void {
+    this.emitWsEvent({ type: 'server_shutdown' })
     this.destroyed = true
     this.tcpSocket?.destroy()
     this.ws.close()
