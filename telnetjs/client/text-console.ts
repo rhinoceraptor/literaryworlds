@@ -1,6 +1,9 @@
 import { splashTextBanner, connectionLostBanner } from './strings'
 import { CommandHistoryBuffer } from './command-history-buffer'
 import {
+  containsUrl,
+  extractUrl,
+  removeUrl,
   isCtrlL,
   isUpArrow,
   isDownArrow,
@@ -10,11 +13,11 @@ import {
 export class TextConsole {
   consoleOutput: HTMLElement
   consoleInput: HTMLElement
-  enCoreIFrame: HTMLElement
+  enCoreIFrame?: Element
   cmdHistoryBuffer: CommandHistoryBuffer
   commandHandler?: Function
 
-  constructor(consoleOutput: HTMLElement, consoleInput: HTMLElement, enCoreIFrame: HTMLElement) {
+  constructor(consoleOutput: HTMLElement, consoleInput: HTMLElement, enCoreIFrame?: Element) {
     this.consoleOutput = consoleOutput
     this.consoleInput = consoleInput
     this.enCoreIFrame = enCoreIFrame
@@ -25,11 +28,20 @@ export class TextConsole {
     this.writeToConsoleOutput(splashTextBanner)
   }
 
-  onCommandEntered(fn: Function): void {
+  outputData(str: string): void {
+    if (containsUrl(str)) {
+      this.enCoreIFrame?.setAttribute('src', extractUrl(str))
+      str = removeUrl(str)
+    }
+
+    this.writeToConsoleOutput(str)
+  }
+
+  onCommandEntered(fn: (str: string) => void): void {
     this.commandHandler = fn
   }
 
-  onConnectionLost(): void {
+  informConnectionLost(): void {
     this.writeToConsoleOutput(connectionLostBanner)
   }
 
