@@ -1,6 +1,5 @@
 import { Server } from './server'
 import { TCP } from '../common/types'
-import { ProxyClient } from './proxy-client'
 
 const wsPort: number = parseInt(process.env.WEBSOCKET_LISTEN_PORT || '8080', 10);
 const tcpConfig: TCP.Config = {

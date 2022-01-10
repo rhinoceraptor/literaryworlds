@@ -30,7 +30,7 @@ export class Server {
 
     const exitSignals = ['exit', 'SIGINT', 'SIGUSR1', 'SIGUSR2', 'SIGTERM']
     exitSignals.forEach((eventType) => {
-      process.on(eventType, (...args) => {
+      process.on(eventType, () => {
         console.log(`Received ${eventType}`)
         for (const [clientId, proxyClient] of Object.entries(this.proxyClients)) {
           console.log(`Destroying client ${clientId}`)

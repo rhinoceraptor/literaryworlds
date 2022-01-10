@@ -8,7 +8,7 @@ export class ProxyClient {
   tcpSocket?: net.Socket
   tcpConfig: TCP.Config
   destroyed: boolean
-  onCloseCallback?: Function
+  onCloseCallback?: () => void
 
   constructor(id: string, ws: WebSocket, tcpConfig: TCP.Config) {
     this.id = id
@@ -54,7 +54,7 @@ export class ProxyClient {
     })
   }
 
-  onClose(fn: Function) {
+  onClose(fn: () => void): void {
     this.onCloseCallback = fn
   }
 

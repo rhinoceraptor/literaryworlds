@@ -15,7 +15,7 @@ export class TextConsole {
   consoleInput: HTMLElement
   enCoreIFrame?: Element
   cmdHistoryBuffer: CommandHistoryBuffer
-  commandHandler?: Function
+  commandHandler?: (str: string) => void
 
   constructor(consoleOutput: HTMLElement, consoleInput: HTMLElement, enCoreIFrame?: Element) {
     this.consoleOutput = consoleOutput
@@ -67,11 +67,18 @@ export class TextConsole {
         break
       case (isEnter(e)):
         this.cmdHistoryBuffer.overwriteHistory()
-        this.commandHandler && this.commandHandler(this.consoleInput.textContent)
+        this.commandHandler &&
+          this.consoleInput?.textContent &&
+          this.commandHandler(this.consoleInput.textContent)
         break
     }
   }
 
   clearConsoleOutput(): void {
+    const outputHeight: number = this.consoleOutput.offsetHeight
+    const fontHeight: number = parseInt(window.getComputedStyle(this.consoleOutput).fontSize, 10)
+    const numberOfLines: number = Math.ceil(outputHeight / fontHeight) + 1
+    const newLines: string = Array(numberOfLines).join('\n')
+    this.writeToConsoleOutput(newLines)
   }
 }

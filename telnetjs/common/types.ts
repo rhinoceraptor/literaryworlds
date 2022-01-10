@@ -53,10 +53,13 @@ export namespace WS {
 
 export namespace Moo {
   export type Params = {
-    mooname: string,
+    mooName: string,
+    hostName: string,
+    socketServer: string,
     autologin: boolean,
-    font?: string,
-    fontsize?: number,
+    port: number,
+    font: string,
+    fontsize: number,
     localecho: boolean
   }
 }
