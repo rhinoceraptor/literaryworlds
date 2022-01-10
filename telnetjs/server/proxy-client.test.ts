@@ -1,5 +1,5 @@
 import { last } from 'ramda'
-import uuid from 'uuid'
+import { v4 as uuidv4 } from 'uuid'
 import { TCP } from '../common/types'
 import { ProxyClient } from './proxy-client'
 import { waitUntil } from '../mocks/wait-until'
@@ -26,7 +26,7 @@ describe('ProxyClient', () => {
     await wsServer.init()
     wsClient = new MockWsClient(8888)
     await wsClient.init()
-    proxyClient = new ProxyClient(uuid.v4(), wsClient.client, tcpConfig)
+    proxyClient = new ProxyClient(uuidv4(), wsClient.client, tcpConfig)
     await proxyClient.init()
   })
 

@@ -8,6 +8,7 @@ export class ProxyClient {
   tcpSocket?: net.Socket
   tcpConfig: TCP.Config
   destroyed: boolean
+  onCloseCallback?: Function
 
   constructor(id: string, ws: WebSocket, tcpConfig: TCP.Config) {
     this.id = id
@@ -51,6 +52,10 @@ export class ProxyClient {
     return new Promise(resolve => {
       this.tcpSocket?.on('ready', () => resolve())
     })
+  }
+
+  onClose(fn: Function) {
+    this.onCloseCallback = fn
   }
 
   handleWsEvent(event: WS.InboundEvent): void {
@@ -98,5 +103,6 @@ export class ProxyClient {
     this.destroyed = true
     this.tcpSocket?.destroy()
     this.ws.close()
+    this.onCloseCallback && this.onCloseCallback()
   }
 }
