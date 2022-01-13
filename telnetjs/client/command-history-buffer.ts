@@ -1,4 +1,3 @@
-
 export class CommandHistoryBuffer {
   history: Array<string>
   historyIndex: number
@@ -13,19 +12,18 @@ export class CommandHistoryBuffer {
   }
 
   reverseHistory(): string {
-    return this.historyIndex ? this.history[--this.historyIndex] : ''
+    this.historyIndex += this.historyIndex < this.history.length - 1 ? 1 : 0
+    return this.history[this.historyIndex]
   }
 
   forwardHistory(): string {
-    if (this.historyIndex < this.history.length) {
-      return this.history[++this.historyIndex]
-    } else {
-      return ''
-    }
+    this.historyIndex -= this.historyIndex ? 1 : 0
+    return this.history[this.historyIndex]
   }
 
-  overwriteHistory(): void {
-    this.history.slice(this.historyIndex)
+  write(command: string): void {
+    this.history = [command, ...this.history]
+    this.historyIndex = 0
   }
 }
 
