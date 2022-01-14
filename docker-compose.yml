@@ -5,6 +5,7 @@ services:
     container_name: nginx
     ports:
       - "80:80"
+      - "7000:7000"
     links:
       - "moo.js:moo.js"
       - "lambdamoo:lambdamoo"
@@ -22,7 +23,7 @@ services:
     container_name: lambdamoo
     volumes:
       - "./encore:/encore"
-    entrypoint: ["./moo", "/encore/enCore.db", "/encore/enCore.db.new"]
+    entrypoint: ["./moo", "/db/enCore.db", "/db/enCore.db.new"]
   moo.js:
     build: moo.js
     container_name: moo.js

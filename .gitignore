@@ -2,3 +2,4 @@
 .env
 encore
 telnetjs/coverage
+db

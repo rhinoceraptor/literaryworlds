@@ -22,3 +22,10 @@ stock copy of enCore if you don't have one already to use.
   port for connecting to LambdaMOO, to prevent it being exposed on the network.
 - `fetch_stock_encore.sh`: Fetches a stock copy of enCore and places it in the
   `./encore` directory. This is useful for getting the stack running.
+
+## Setup instructions
+You will need an enCore database, either a stock database or one you provide.
+Note that your database must be modified in order to work with this setup,
+several verbs will be changed.
+
+To get a stock database for testing, use the `scripts/fetch_stock_encore.sh` script.

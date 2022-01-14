@@ -1,3 +1,14 @@
+# vim: set syntax=nginx ft=nginx
+
+server {
+  listen ${ENCORE_HTTP_PORT};
+
+  # enCore dynamic content reverse proxy
+  location / {
+    proxy_pass http://${LAMBDAMOO_HOST}:${ENCORE_HTTP_PORT};
+  }
+}
+
 server {
   listen ${NGINX_PORT};
 
