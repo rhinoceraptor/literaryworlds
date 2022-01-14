@@ -6,13 +6,13 @@ services:
     ports:
       - "80:80"
     links:
-      - "telnetjs:telnetjs"
+      - "moo.js:moo.js"
       - "lambdamoo:lambdamoo"
     volumes:
       - "./encore:/webroot/encore"
       - "./nginx/templates:/etc/nginx/templates/"
     environment:
-      WEBSOCKET_HOST: telnetjs
+      WEBSOCKET_HOST: moo.js
       WEBSOCKET_PORT: 8080
       LAMBDAMOO_HOST: lambdamoo
       ENCORE_HTTP_PORT: 7000
@@ -23,9 +23,9 @@ services:
     volumes:
       - "./encore:/encore"
     entrypoint: ["./moo", "/encore/enCore.db", "/encore/enCore.db.new"]
-  telnetjs:
-    build: telnetjs
-    container_name: telnetjs
+  moo.js:
+    build: moo.js
+    container_name: moo.js
     links:
       - "lambdamoo:lambdamoo"
     environment:

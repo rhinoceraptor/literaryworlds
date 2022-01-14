@@ -66,9 +66,9 @@ export class TextConsole {
         this.writeToConsoleInput(this.cmdHistoryBuffer.forwardHistory())
         break
       case (isEnter(e)):
-        this.cmdHistoryBuffer.overwriteHistory()
         this.commandHandler &&
           this.consoleInput?.textContent &&
+          this.cmdHistoryBuffer.write(this.consoleInput.textContent) &&
           this.commandHandler(this.consoleInput.textContent)
         break
     }

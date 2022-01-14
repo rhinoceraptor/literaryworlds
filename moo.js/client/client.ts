@@ -40,6 +40,7 @@ export class Client {
   }
 }
 
+// The global params object is set by an enCore verb
 const getParams = (): Moo.Params => {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const params = (<any>window).params

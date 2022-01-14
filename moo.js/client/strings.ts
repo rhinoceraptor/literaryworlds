@@ -1,3 +1,5 @@
+import { version } from '../package.json'
+
 /* eslint-disable no-useless-escape */
 
 export const splashTextBanner = `
@@ -9,7 +11,7 @@ export const splashTextBanner = `
 \t |   / / / / / / /_/ / /_/ /   / (__  )    |
 \t |  /_/ /_/ /_/\____/\____(_)_/ /____/     |
 \t |                        /___/            |
-\t |          version 0.1.0                  |
+\t |          version ${version}                  |
 \t +-----------------------------------------+
 
 `

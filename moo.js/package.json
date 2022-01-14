@@ -1,6 +1,6 @@
 {
-  "name": "telnetjs",
-  "version": "0.0.1",
+  "name": "moo.js",
+  "version": "0.1.0",
   "description": "Telnet to WebSocket client for MUDs",
   "main": "index.js",
   "scripts": {
