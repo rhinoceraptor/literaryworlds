@@ -22,7 +22,7 @@ services:
     build: lambdamoo
     container_name: lambdamoo
     volumes:
-      - "./encore:/encore"
+      - "./db:/db"
     entrypoint: ["./moo", "/db/enCore.db", "/db/enCore.db.new"]
   moo.js:
     build: moo.js

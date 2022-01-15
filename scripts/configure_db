@@ -1,0 +1,50 @@
+#!/usr/bin/env expect
+
+# Script to auto-configure the enCore database
+
+set timeout 10
+set prompt "\r\n(.*)\r\nMOO \\(#2\\): $"
+set verbEditPrompt "(.*)Use \"\\.\" to end\\.\r\n$"
+
+spawn ./moo -e enCore.db enCore.db.new
+
+# Wait for initial prompt
+expect -re "$prompt"
+
+# Read a verb, regex http to https, and then write it back
+proc httpsifyVerb {object verb} {
+  variable prompt
+  variable verbEditPrompt
+
+  # Retrieve the verb
+  send "list #$object:$verb\n"
+  expect -re "$prompt"
+
+  # Replace http:// with https://
+  regsub -all {http://} "$expect_out(1,string)" "https://" editedVerbContents
+
+  # Program the verb
+  send "program #$object:$verb\n"
+  expect -re "$verbEditPrompt"
+  send "$editedVerbContents\n.\n"
+
+  # Wait for the main MOO prompt
+  expect -re "$prompt"
+}
+
+httpsifyVerb "125" "generate_links"
+httpsifyVerb "125" "form"
+httpsifyVerb "125" "insert_context_sensitive_help"
+httpsifyVerb "125" "detect_urls"
+httpsifyVerb "125" "get_icon"
+httpsifyVerb "125" "baseurl"
+
+httpsifyVerb "147" "init_for_core"
+httpsifyVerb "147" "vertical_layout"
+httpsifyVerb "147" "horizontal_layout"
+httpsifyVerb "147" "simple_layout"
+httpsifyVerb "147" "menu_html"
+httpsifyVerb "147" "java_html"
+
+# Return control to user
+interact

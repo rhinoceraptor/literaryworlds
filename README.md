@@ -29,3 +29,7 @@ Note that your database must be modified in order to work with this setup,
 several verbs will be changed.
 
 To get a stock database for testing, use the `scripts/fetch_stock_encore.sh` script.
+
+If you'd like to use your own database, place the database file in the `db/` directory,
+and the encore static files in the `encore/` directory.
+
