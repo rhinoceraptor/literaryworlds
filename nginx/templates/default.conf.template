@@ -1,13 +1,13 @@
 # vim: set syntax=nginx ft=nginx
 
-# js_import conf.d/rewrite.js;
+js_import rewrite from conf.d/rewrite.js;
 
 server {
   listen ${ENCORE_HTTP_PORT};
 
   # enCore dynamic content reverse proxy
   location / {
-    # js_body_filter rewrite.rewriteBodyLinks;
+    js_body_filter rewrite.rewriteBodyLinks;
     proxy_pass http://${LAMBDAMOO_HOST}:${ENCORE_HTTP_PORT};
   }
 }
@@ -17,6 +17,7 @@ server {
 
   # enCore dynamic content reverse proxy
   location / {
+    js_body_filter rewrite.rewriteBodyLinks;
     proxy_pass http://${LAMBDAMOO_HOST}:${ENCORE_HTTP_PORT};
   }
 
@@ -33,5 +34,9 @@ server {
     proxy_set_header Connection "Upgrade";
     proxy_set_header Host $host;
     proxy_read_timeout 86400;
+  }
+
+  # Upstream web server reverse proxy
+  location /external-proxy {
   }
 }
