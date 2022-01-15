@@ -5,8 +5,9 @@
   "main": "index.js",
   "scripts": {
     "build": "tsc",
+    "build-client": "webpack",
     "build-watch": "tsc --watch",
-    "clean": "tsc --build --clean",
+    "clean": "tsc --build --clean && rm dist/*",
     "test": "jest --testPathPattern \"/*.test.ts\"",
     "test-watch": "jest --watch --testPathPattern \"/*.test.ts\"",
     "lint": "eslint . --ext .ts"
@@ -30,8 +31,11 @@
     "eslint": "^8.6.0",
     "jest": "^27.4.7",
     "ts-jest": "^27.1.2",
+    "ts-loader": "^9.2.6",
     "ts-node": "^10.4.0",
-    "typescript": "^4.5.4"
+    "typescript": "^4.5.4",
+    "webpack": "^5.66.0",
+    "webpack-cli": "^4.9.1"
   },
   "dependencies": {
     "bluebird": "^3.7.2",

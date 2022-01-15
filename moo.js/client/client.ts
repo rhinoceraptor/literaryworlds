@@ -1,4 +1,3 @@
-import WebSocket from 'ws'
 import { TextConsole } from './text-console'
 import { Moo } from '../common/types'
 
@@ -28,15 +27,21 @@ export class Client {
     this.console = new TextConsole(consoleOutput, consoleInput, enCoreIFrame)
 
     this.console.onCommandEntered((command: string) => {
-      this.websocket.send({
+      this.websocket.send(JSON.stringify({
         type: 'data',
         data: command
-      })
+      }))
     })
 
-    this.websocket.on('close', () => this.console?.informConnectionLost())
-    this.websocket.on('error', () => this.console?.informConnectionLost())
-    this.websocket.on('message', data => this.console?.outputData(data.toString()))
+    this.websocket.addEventListener('close', () => this.console?.informConnectionLost())
+    this.websocket.addEventListener('error', () => this.console?.informConnectionLost())
+    this.websocket.addEventListener('message', data => {
+      try {
+        this.console?.outputData(JSON.parse(data.toString()))
+      } catch (e) {
+        console.trace(e)
+      }
+    })
   }
 }
 
