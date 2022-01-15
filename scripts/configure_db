@@ -32,12 +32,12 @@ proc httpsifyVerb {object verb} {
   expect -re "$prompt"
 }
 
-httpsifyVerb "125" "generate_links"
-httpsifyVerb "125" "form"
-httpsifyVerb "125" "insert_context_sensitive_help"
-httpsifyVerb "125" "detect_urls"
-httpsifyVerb "125" "get_icon"
-httpsifyVerb "125" "baseurl"
+httpsifyVerb "$encore_web_utils" "generate_links"
+httpsifyVerb "$encore_web_utils" "form"
+httpsifyVerb "$encore_web_utils" "insert_context_sensitive_help"
+httpsifyVerb "$encore_web_utils" "detect_urls"
+httpsifyVerb "$encore_web_utils" "get_icon"
+httpsifyVerb "$encore_web_utils" "baseurl"
 
 httpsifyVerb "147" "init_for_core"
 httpsifyVerb "147" "vertical_layout"

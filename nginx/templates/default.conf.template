@@ -1,10 +1,13 @@
 # vim: set syntax=nginx ft=nginx
 
+# js_import conf.d/rewrite.js;
+
 server {
   listen ${ENCORE_HTTP_PORT};
 
   # enCore dynamic content reverse proxy
   location / {
+    # js_body_filter rewrite.rewriteBodyLinks;
     proxy_pass http://${LAMBDAMOO_HOST}:${ENCORE_HTTP_PORT};
   }
 }
