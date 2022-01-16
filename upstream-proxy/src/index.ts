@@ -1,33 +1,38 @@
 import axios from 'axios'
 import express from 'express'
-import path from 'path'
 
 const app = express()
 
-app.get('*', async (req, res, next) => {
+app.get('*', async (req, res) => {
+  // The leading /^https?:\/\// will be mangled, we have to clean it up
   const proxiedUrl = req.url.startsWith('/http:/')
     ? req.url.replace('/http:/', 'http://')
     : req.url.replace('/https:/', 'https://')
 
+  // Initiate the request stream
   const response = await axios({
     method: 'get',
     url: proxiedUrl,
     responseType: 'stream'
   })
 
+  // Pass the HTTP headers and status back to the client
   res.status(response.status)
   res.set(response.headers)
 
   const stream = response.data
+  // Stream data back to client
   stream.on('data', (chunk: 'ArrayBuffer') => {
     res.write(chunk)
   })
 
+  // Error handler
   stream.on('error', () => {
     res.status(500)
     res.send('Error')
   })
 
+  // Finalize the connection
   stream.on('end', () => res.end())
 })
 
