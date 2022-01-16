@@ -13,22 +13,18 @@ echo -e "               Configuring LambdaMOO Database"
 echo -e "===============================================================\n"
 ./configure_db
 
-ls -lA /db/
-ls -lA "$DATABASE"
-
-DB_BACKUP="$DATABASE.$(date +%F-%X)"
-ls -lA "$DATABASE"
+sleep 2
 echo -e "\n==============================================================="
-echo -e " Backing up $DATABASE to $DB_BACKUP"
+echo -e " Backing up $DATABASE to $DATABASE.$(date +%F-%X)"
 echo -e "===============================================================\n"
 # Create a backup of the old database
-mv -i "$DATABASE" "$DATABASE.$DB_BACKUP"
+mv "$DATABASE" "$DATABASE.$(date +%F-%X)"
 
 echo -e "\n==============================================================="
 echo -e " Backing up $NEWDATABASE to $DATABASE"
 echo -e "===============================================================\n"
 # Move the edited database
-mv -i "$NEWDATABASE" "$DATABASE"
+mv "$NEWDATABASE" "$DATABASE"
 
 # Start up LambdaMOO!
 echo -e "\n==============================================================="

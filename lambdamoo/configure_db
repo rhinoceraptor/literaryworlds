@@ -2,8 +2,8 @@
 
 # Script to auto-configure the enCore database
 
-set timeout 2
-set prompt "\r\n(.*)\r\nMOO \\(#2\\):"
+set timeout 10
+set prompt "(.*)\r\nMOO \\(#2\\):"
 set verbEditPrompt "(.*)Use \"\\.\" to end\\.\r\n$"
 
 # uncomment to debug expect
@@ -16,13 +16,18 @@ puts "==================================="
 
 spawn ./moo -e "$env(DATABASE)" "$env(NEWDATABASE)"
 
+sleep 2
+send "\n"
+
 # Wait for initial prompt
 expect -re "$prompt"
 
 proc editObjectProperty {object property value} {
   variable prompt
 
-  send ";$object.$property = \"$value\"\n\n"
+  send ";$object.$property = \"$value\"\n"
+  sleep 1
+  send "\n"
   expect -re "$prompt"
 }
 
@@ -40,8 +45,8 @@ proc editObjectVerb {object verb value} {
 }
 
 # Edit network-related properties
-editObjectProperty "#72" "port" "$env(TCP_PORT)"
-editObjectProperty "#72" "webport" "$env(ENCORE_HTTP_PORT)"
+# editObjectProperty "#72" "port" "$env(TCP_PORT)"
+# editObjectProperty "#72" "webport" "$env(ENCORE_HTTP_PORT)"
 editObjectProperty "#72" "site" "$env(DOMAIN_NAME)"
 editObjectProperty "#147" "external_baseurl" "http://$env(DOMAIN_NAME)/encore/"
 
@@ -50,4 +55,4 @@ editObjectProperty "#147" "external_baseurl" "http://$env(DOMAIN_NAME)/encore/"
 
 # Done!
 send "quit\n"
-expect -re "finished"
+expect -re "finished\r\n$"
