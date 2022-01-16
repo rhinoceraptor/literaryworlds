@@ -16,7 +16,7 @@ puts "==================================="
 
 spawn ./moo -e "$env(DATABASE)" "$env(NEWDATABASE)"
 
-sleep 2
+sleep 1
 send "\n"
 
 # Wait for initial prompt
@@ -26,7 +26,6 @@ proc editObjectProperty {object property value} {
   variable prompt
 
   send ";$object.$property = \"$value\"\n"
-  sleep 1
   send "\n"
   expect -re "$prompt"
 }
@@ -45,8 +44,8 @@ proc editObjectVerb {object verb value} {
 }
 
 # Edit network-related properties
-# editObjectProperty "#72" "port" "$env(TCP_PORT)"
-# editObjectProperty "#72" "webport" "$env(ENCORE_HTTP_PORT)"
+editObjectProperty "#72" "port" "$env(TCP_PORT)"
+editObjectProperty "#72" "webport" "$env(ENCORE_HTTP_PORT)"
 editObjectProperty "#72" "site" "$env(DOMAIN_NAME)"
 editObjectProperty "#147" "external_baseurl" "http://$env(DOMAIN_NAME)/encore/"
 
@@ -55,4 +54,4 @@ editObjectProperty "#147" "external_baseurl" "http://$env(DOMAIN_NAME)/encore/"
 
 # Done!
 send "quit\n"
-expect -re "finished\r\n$"
+expect eof
