@@ -2,7 +2,14 @@
 
 - [ ] Implement `configure_encore.sh` script
   - `./moo -e` is emergency mode for editing encore DBs
-  - [ ] `@configure`, various other verbs/properties
+  - [ ] `@configure`
+    - [ ] 6 - Port
+    - [ ] 7 - Web Port
+    - [ ] 8 - Domain Name
+    - [ ] 18 - Base URL
+  - [ ] moo.js
+  - [ ] Verb HTML
+- [x] Mount moo.js dist/ folder into nginx
 - [x] Nginx content rewrite HTTPS
 - [x] Reverse proxy upstream server
 - [x] Implement `fetch_stock_encore.sh` script

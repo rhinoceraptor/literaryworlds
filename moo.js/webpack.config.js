@@ -3,7 +3,7 @@ module.exports = {
   entry: './client/client.ts',
   mode: 'development',
   output: {
-    filename: 'bundle.[contenthash].js',
+    filename: 'bundle.js',
     path: path.resolve(__dirname, 'dist')
   },
   resolve: {

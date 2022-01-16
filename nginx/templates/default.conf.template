@@ -30,6 +30,11 @@ server {
     root /webroot;
   }
 
+  # Asset static content
+  location /assets/ {
+    root /webroot;
+  }
+
   # Websocket reverse proxy
   location /lambdamoo/websocket/ {
     proxy_pass http://${WEBSOCKET_HOST}:${WEBSOCKET_PORT};

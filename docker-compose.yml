@@ -2,7 +2,8 @@ version: '3'
 services:
   nginx:
     build:
-      context: ./nginx
+      context: ./
+      dockerfile: ./nginx/Dockerfile
       args:
         ENABLED_MODULES: njs
     container_name: nginx
@@ -16,6 +17,7 @@ services:
     volumes:
       - "./nginx/conf.d/nginx.conf:/etc/nginx/nginx.conf"
       - "./nginx/conf.d/rewrite.js:/etc/nginx/conf.d/rewrite.js"
+      - "./dist:/webroot/dist"
       - "./encore:/webroot/encore"
       - "./nginx/templates:/etc/nginx/templates/"
     environment:
@@ -50,3 +52,5 @@ services:
     container_name: upstream-proxy
     environment:
       UPSTREAM_PROXY_PORT: 8000
+    volumes:
+      - "./moo.js/dist:/app/dist"
