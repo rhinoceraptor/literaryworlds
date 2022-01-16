@@ -20,6 +20,7 @@ RUN apk add expect
 # Copy the database configuration script and startup script
 COPY ./configure_db .
 COPY ./startup.sh .
+COPY ./verbs ./verbs
 
 # A LambdaMOO DB is required, override this entrypoint with the path to the DB
 # mounted in as a volume

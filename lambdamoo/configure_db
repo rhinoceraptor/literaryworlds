@@ -35,7 +35,7 @@ proc editObjectVerb {object verb value} {
   variable verbEditPrompt
 
   # Program the verb
-  send "program #$object:$verb\n"
+  send "program $object:$verb\n"
   expect -re "$verbEditPrompt"
   send "$value\n.\n"
 
@@ -43,11 +43,21 @@ proc editObjectVerb {object verb value} {
   expect -re "$prompt"
 }
 
+proc readFile {filepath} {
+  set fp [open "$filepath" r]
+  set data [read $fp]
+  close $fp
+  return "$data"
+}
+
 # Edit network-related properties
 editObjectProperty "#72" "port" "$env(TCP_PORT)"
 editObjectProperty "#72" "webport" "$env(ENCORE_HTTP_PORT)"
 editObjectProperty "#72" "site" "\"$env(DOMAIN_NAME)\""
 editObjectProperty "#147" "external_baseurl" "\"http://$env(DOMAIN_NAME)/encore/\""
+
+editObjectVerb "#147" "java_html" [readFile "verbs/147_java_html"]
+editObjectVerb "#148" "standalone_html" [readFile "verbs/148_standalone_html"]
 
 # Return control to user
 # interact

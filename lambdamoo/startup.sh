@@ -6,6 +6,7 @@ export DATABASE=$1
 export NEWDATABASE=$2
 
 ls -lA /db/
+ls -lA
 
 # Configure the database
 echo -e "\n==============================================================="
