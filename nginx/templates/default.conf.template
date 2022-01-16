@@ -27,7 +27,7 @@ server {
   }
 
   # Websocket reverse proxy
-  location /lambdamoo/websocket {
+  location /lambdamoo/websocket/ {
     proxy_pass http://${WEBSOCKET_HOST}:${WEBSOCKET_PORT};
     proxy_http_version 1.1;
     proxy_set_header Upgrade $http_upgrade;
@@ -37,6 +37,7 @@ server {
   }
 
   # Upstream web server reverse proxy
-  location /external-proxy {
+  location /external-proxy/ {
+    proxy_pass http://${UPSTREAM_PROXY_HOST}:${UPSTREAM_PROXY_PORT}/;
   }
 }

@@ -1,7 +1,7 @@
 import { TextConsole } from './text-console'
 import { Moo } from '../common/types'
 
-const wsPort = parseInt(process.env.WEBSOCKET_LISTEN_PORT || '8080', 10)
+const wsPort = parseInt(process.env.WEBSOCKET_PORT || '8080', 10)
 const wsHost = process.env.WEBSOCKET_HOST
 
 export class Client {
