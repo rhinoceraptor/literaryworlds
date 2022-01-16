@@ -15,6 +15,11 @@ RUN chmod +x moo
 FROM alpine
 WORKDIR lambdamoo
 COPY --from=lambdamoo_builder lambdamoo/moo .
+RUN apk add expect
+
+# Copy the database configuration script and startup script
+COPY ./configure_db .
+COPY ./startup.sh .
 
 # A LambdaMOO DB is required, override this entrypoint with the path to the DB
 # mounted in as a volume

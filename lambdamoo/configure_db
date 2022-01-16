@@ -2,11 +2,19 @@
 
 # Script to auto-configure the enCore database
 
-set timeout 10
-set prompt "\r\n(.*)\r\nMOO \\(#2\\): $"
+set timeout 2
+set prompt "\r\n(.*)\r\nMOO \\(#2\\):"
 set verbEditPrompt "(.*)Use \"\\.\" to end\\.\r\n$"
 
-spawn ./moo -e enCore.db enCore.db.new
+# uncomment to debug expect
+# exp_internal 1
+
+puts "==================================="
+puts "DATABASE: $env(DATABASE)"
+puts "NEWDATABASE: $env(NEWDATABASE)"
+puts "==================================="
+
+spawn ./moo -e "$env(DATABASE)" "$env(NEWDATABASE)"
 
 # Wait for initial prompt
 expect -re "$prompt"
@@ -14,7 +22,7 @@ expect -re "$prompt"
 proc editObjectProperty {object property value} {
   variable prompt
 
-  send ";$object.$property = \"$value\"\n"
+  send ";$object.$property = \"$value\"\n\n"
   expect -re "$prompt"
 }
 
