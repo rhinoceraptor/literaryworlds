@@ -25,7 +25,7 @@ expect -re "$prompt"
 proc editObjectProperty {object property value} {
   variable prompt
 
-  send ";$object.$property = \"$value\"\n"
+  send ";$object.$property = $value\n"
   send "\n"
   expect -re "$prompt"
 }
@@ -46,8 +46,8 @@ proc editObjectVerb {object verb value} {
 # Edit network-related properties
 editObjectProperty "#72" "port" "$env(TCP_PORT)"
 editObjectProperty "#72" "webport" "$env(ENCORE_HTTP_PORT)"
-editObjectProperty "#72" "site" "$env(DOMAIN_NAME)"
-editObjectProperty "#147" "external_baseurl" "http://$env(DOMAIN_NAME)/encore/"
+editObjectProperty "#72" "site" "\"$env(DOMAIN_NAME)\""
+editObjectProperty "#147" "external_baseurl" "\"http://$env(DOMAIN_NAME)/encore/\""
 
 # Return control to user
 # interact
