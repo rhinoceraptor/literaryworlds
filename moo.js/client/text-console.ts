@@ -49,10 +49,18 @@ export class TextConsole {
 
   writeToConsoleOutput(str: string): void {
     this.consoleOutput.textContent += str
+    this.scrollOutputToEnd()
   }
 
   writeToConsoleInput(str: string): void {
     this.consoleInput.value = str
+  }
+
+  scrollOutputToEnd(): void {
+    this.consoleOutput.scrollTop = Math.ceil(
+      this.consoleOutput.scrollHeight -
+      this.consoleOutput.getBoundingClientRect().height
+    )
   }
 
   inputHandler(e: KeyboardEvent): void {
