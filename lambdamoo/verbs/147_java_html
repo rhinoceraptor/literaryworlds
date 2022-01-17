@@ -16,7 +16,6 @@ base_url = tostr("http://", $network.site, "/");
 style = 0;
 "CSS for the JavaScript MOO client";
 body = {tostr("<link rel=\"stylesheet\" href=\"", base_url, "encore/client/dist/lib/lw.css\">")};
-
 "JavaScript object containing parameters for the Javascript MOO telnet client";
 body = {@body, tostr("<script type=\"text/javascript\"> ")};
 body = {@body, tostr("var params = {")};
@@ -29,15 +28,13 @@ body = {@body, tostr("\"font\": \"", user.java_font, "\",")};
 body = {@body, tostr("\"fontsize\": \"", user.java_font_size, "\",")};
 body = {@body, tostr("\"localecho\": \"", user.java_client_localecho, "\"")};
 body = {@body, tostr("}; </script>")};
-
 "Text Areas used in the MOO telnet client";
 body = {@body, tostr("<ul class=\"text-mode-ul\">")};
-body = {@body, tostr("<li><textarea readonly rows=\"20\" class=\"text-mode\" id=\"text-backlog\" type=\"text\">    </textarea></li>")};
-body = {@body, tostr("<li><textarea rows=\"3\" class=\"text-mode\" id=\"text-input\" type=\"text\"     placeholder=\"Enter text here\"></textarea></li>")};
+body = {@body, tostr("<li><textarea readonly rows=\"20\" class=\"text-mode\" id=\"console-output\" type=\"text\">    </textarea></li>")};
+body = {@body, tostr("<li><textarea rows=\"3\" class=\"text-mode\" id=\"console-input\" type=\"text\"     placeholder=\"Enter text here\"></textarea></li>")};
 body = {@body, tostr("</ul>")};
-
 "Include JavaScript source files for the Telnet client";
-body = {@body, tostr("<script src=\"", base_url, "assets/bundle.js\" type=\"text/javascript\"></script>")};
+body = {@body, tostr("<script src=\"", base_url, "assets/bundle.js?", crypt(tostr(task_id())), "\" type=\"text/javascript\"></script>")};
 result = this:build(user, body, "MOOtcan", "", "", "", "", "", style);
 return result;
 "Last modified Sun Dec 28 17:50:18 2014 EST by Wizard (#2).";

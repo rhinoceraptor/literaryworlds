@@ -1,5 +1,5 @@
 import WebSocket from 'ws'
-import uuid from 'uuid'
+import { v4 } from 'uuid'
 import { TCP } from '../common/types'
 import { ProxyClient } from './proxy-client'
 
@@ -16,7 +16,7 @@ export class Server {
     console.log(`WS Server listening on ${wsPort}, proxying to ${tcpConfig.host}:${tcpConfig.port}`)
 
     wss.on('connection', (ws: WebSocket) => {
-      const clientId = uuid.v4()
+      const clientId = v4()
       const client = new ProxyClient(clientId, ws, tcpConfig)
       this.proxyClients[clientId] = client
 

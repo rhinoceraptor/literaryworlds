@@ -1,7 +1,8 @@
 
 export namespace WebSocketEvents {
   export type Event = {
-    type: string
+    type: string,
+    data?: string
   }
 
   export type TcpReadyEvent = Event & {
@@ -9,8 +10,7 @@ export namespace WebSocketEvents {
   }
 
   export type DataEvent = Event & {
-    type: 'data',
-    data: string
+    type: 'data'
   }
 
   export type TcpCxnErrorEvent = Event & {

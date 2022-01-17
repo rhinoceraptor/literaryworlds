@@ -6,6 +6,7 @@ services:
       dockerfile: ./nginx/Dockerfile
       args:
         ENABLED_MODULES: njs
+        WEBSOCKET_HOST: ws://localhost/lambdamoo/websocket/
     container_name: nginx
     ports:
       - "80:80"
@@ -50,7 +51,6 @@ services:
       TCP_HOST: lambdamoo
       TCP_PORT: 7777
       WEBSOCKET_PORT: 8080
-      WEBSOCKET_HOST: localhost
   upstream-proxy:
     build: upstream-proxy
     container_name: upstream-proxy

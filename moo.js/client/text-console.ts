@@ -12,20 +12,18 @@ import {
 
 export class TextConsole {
   consoleOutput: HTMLElement
-  consoleInput: HTMLElement
+  consoleInput: HTMLInputElement
   enCoreIFrame?: Element
   cmdHistoryBuffer: CommandHistoryBuffer
   commandHandler?: (str: string) => void
 
-  constructor(consoleOutput: HTMLElement, consoleInput: HTMLElement, enCoreIFrame?: Element) {
+  constructor(consoleOutput: HTMLElement, consoleInput: HTMLInputElement, enCoreIFrame?: Element) {
     this.consoleOutput = consoleOutput
     this.consoleInput = consoleInput
     this.enCoreIFrame = enCoreIFrame
     this.cmdHistoryBuffer = new CommandHistoryBuffer()
 
-    this.consoleInput.addEventListener('keypress', this.inputHandler.bind(this))
-
-    this.writeToConsoleOutput(splashTextBanner)
+    this.consoleInput.addEventListener('keydown', this.inputHandler.bind(this))
   }
 
   outputData(str: string): void {
@@ -41,6 +39,10 @@ export class TextConsole {
     this.commandHandler = fn
   }
 
+  informReady(): void {
+    this.writeToConsoleOutput(splashTextBanner)
+  }
+
   informConnectionLost(): void {
     this.writeToConsoleOutput(connectionLostBanner)
   }
@@ -50,7 +52,7 @@ export class TextConsole {
   }
 
   writeToConsoleInput(str: string): void {
-    this.consoleInput.textContent = str
+    this.consoleInput.value = str
   }
 
   inputHandler(e: KeyboardEvent): void {
@@ -66,10 +68,10 @@ export class TextConsole {
         this.writeToConsoleInput(this.cmdHistoryBuffer.forwardHistory())
         break
       case (isEnter(e)):
-        this.commandHandler &&
-          this.consoleInput?.textContent &&
-          this.cmdHistoryBuffer.write(this.consoleInput.textContent) &&
-          this.commandHandler(this.consoleInput.textContent)
+        e.preventDefault()
+        this.cmdHistoryBuffer.write(this.consoleInput.value)
+        this.commandHandler && this.commandHandler(this.consoleInput.value)
+        this.writeToConsoleInput('')
         break
     }
   }

@@ -39,6 +39,9 @@ proc editObjectVerb {object verb value} {
   expect -re "$verbEditPrompt"
   send "$value\n.\n"
 
+  sleep 1
+  send "\n"
+
   # Wait for the main MOO prompt
   expect -re "$prompt"
 }

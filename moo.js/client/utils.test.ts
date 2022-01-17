@@ -8,7 +8,6 @@ import {
   isUpArrow,
   isDownArrow,
   isEnter,
-  urlRegex,
   containsUrl,
   extractUrl,
   removeUrl

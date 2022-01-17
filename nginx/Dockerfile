@@ -7,6 +7,7 @@ RUN npm ci --quiet
 ENV PATH="./node_modules/.bin:${PATH}"
 
 COPY ./moo.js/ .
+ARG WEBSOCKET_HOST
 RUN npm run-script build-client
 
 FROM nginx:1.21.0-alpine as nginx

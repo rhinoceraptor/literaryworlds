@@ -61,7 +61,7 @@ export class ProxyClient {
   handleWsEvent(event: WS.InboundEvent): void {
     switch(event.type) {
       case 'data':
-        return this.handleWsData(event.data.toString())
+        return this.handleWsData(event.data?.toString() as string)
     }
   }
 
