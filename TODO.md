@@ -16,6 +16,7 @@
 - [ ] Finish moo.js
   - [ ] Finish code
     - [ ] console history
-  - [ ] CSS
+    - [ ] auto console scroll
+  - [x] CSS
   - [x] Cache busting
 - [ ] Let's Encrypt
