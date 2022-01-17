@@ -5,9 +5,9 @@ const app = express()
 
 app.get('*', async (req, res) => {
   // The leading /^https?:\/\// will be mangled, we have to clean it up
-  const proxiedUrl = req.url.startsWith('/http:/')
-    ? req.url.replace('/http:/', 'http://')
-    : req.url.replace('/https:/', 'https://')
+  const proxiedUrl = req.url
+    .replace(/^\/http:\//, 'http://')
+    .replace(/^\/https:\//, 'https://')
 
   // Initiate the request stream
   const response = await axios({
