@@ -31,7 +31,6 @@ export class Client {
       : new TextConsole(consoleOutput, consoleInput)
 
     this.console.onCommandEntered((command: string) => {
-      console.log(command)
       this.websocket.send(JSON.stringify({
         type: 'data',
         data: command
@@ -41,7 +40,6 @@ export class Client {
     this.websocket.addEventListener('close', () => this.console?.informConnectionLost())
     this.websocket.addEventListener('error', () => this.console?.informConnectionLost())
     this.websocket.addEventListener('message', (message, ...rest) => {
-      console.log({ message, rest })
       try {
         const event: WebSocketEvents.ServerToClient = JSON.parse(message?.data?.toString())
         this.handleEvent(event)

@@ -13,9 +13,9 @@
 - [x] Reverse proxy upstream server
 - [x] Implement `fetch_stock_encore.sh` script
 - [x] Don't expose enCore db for stock DB usage
-- [ ] Finish moo.js
-  - [ ] Finish code
-    - [ ] console history
+- [x] Finish moo.js
+  - [x] Finish code
+    - [x] console history
     - [x] auto console scroll
   - [x] CSS
   - [x] Cache busting

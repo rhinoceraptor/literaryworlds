@@ -10,7 +10,7 @@ describe('CommandHistoryBuffer', () => {
   it('should return the current value', () => {
     buffer.write('1')
     buffer.write('2')
-    expect(buffer.getCurrentValue()).toEqual('2')
+    expect(buffer.getCurrentValue()).toEqual('')
   })
 
   it('should reverse through history', () => {
@@ -18,6 +18,8 @@ describe('CommandHistoryBuffer', () => {
     buffer.write('2')
     buffer.write('3')
     buffer.write('4')
+    expect(buffer.getCurrentValue()).toEqual('')
+    buffer.reverseHistory()
     expect(buffer.getCurrentValue()).toEqual('4')
     buffer.reverseHistory()
     expect(buffer.getCurrentValue()).toEqual('3')
@@ -46,7 +48,7 @@ describe('CommandHistoryBuffer', () => {
     buffer.forwardHistory()
     expect(buffer.getCurrentValue()).toEqual('4')
     buffer.forwardHistory()
-    expect(buffer.getCurrentValue()).toEqual('4')
+    expect(buffer.getCurrentValue()).toEqual('')
   })
 
   it('should store new commands in the buffer as LIFO', () => {
