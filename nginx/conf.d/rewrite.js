@@ -16,7 +16,8 @@ function rewriteBodyLinks(r, data, flags) {
       return `"${URL.replace('http://', 'http://')}"`
     } else {
       // return `"https://${ourDomain}/${externalProxyPath}/${URL}"`
-      return `"http://${ourDomain}/${externalProxyPath}/${URL}"`
+      var base64URL = Buffer.from(URL).toString('base64');
+      return `"http://${ourDomain}/${externalProxyPath}/${base64URL}"`
     }
   })
 

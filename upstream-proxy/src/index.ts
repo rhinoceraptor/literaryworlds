@@ -4,10 +4,7 @@ import express from 'express'
 const app = express()
 
 app.get('*', async (req, res) => {
-  // The leading /^https?:\/\// will be mangled, we have to clean it up
-  const proxiedUrl = req.url
-    .replace(/^\/http:\//, 'http://')
-    .replace(/^\/https:\//, 'https://')
+  const proxiedUrl = Buffer.from(req.url.replace('/', ''), 'base64').toString()
 
   // Initiate the request stream
   const response = await axios({
