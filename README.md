@@ -63,3 +63,5 @@ Next, start the server:
 After a few minutes, the server will be running, and enCore will be running on
 `http://localhost`, so open that URL in your web browser.
 
+To stop the server, press ctrl-c.
+
