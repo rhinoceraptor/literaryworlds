@@ -23,13 +23,43 @@ stock copy of enCore if you don't have one already to use.
 - `fetch_stock_encore.sh`: Fetches a stock copy of enCore and places it in the
   `./encore` directory. This is useful for getting the stack running.
 
-## Setup instructions
+## Setup Notes
 You will need an enCore database, either a stock database or one you provide.
-Note that your database must be modified in order to work with this setup,
+Note that your database will be modified in order to work with this setup,
 several verbs will be changed.
 
-To get a stock database for testing, use the `scripts/fetch_stock_encore.sh` script.
+## Setup Instructions for Ubuntu
+Install docker:
+```bash
+sudo apt install -y docker docker-compose
+sudo usermod -aG docker $(whoami)
+sudo su $(whoami)
+```
 
-If you'd like to use your own database, place the database file in the `db/` directory,
-and the encore static files in the `encore/` directory.
+Clone this repository:
+```bash
+git clone https://github.com/rhinoceraptor/literaryworlds.git
+cd literaryworlds
+```
+
+Now you need to add enCore files and a LambdaMOO database.
+
+You can use a stock enCore database, by running
+```bash
+./scripts/fetch_stock_encore.sh
+```
+
+At the prompt, type `y` and hit enter.
+
+If you want to use your own copy of enCore files and LambdaMOO database, place
+your encore files in the `encore/` directory, and place your LambdaMOO database
+in the `db/` directory, and it must be named `enCore.db`.
+
+Next, start the server:
+```bash
+./scripts/up.sh
+```
+
+After a few minutes, the server will be running, and enCore will be running on
+`http://localhost`, so open that URL in your web browser.
 
