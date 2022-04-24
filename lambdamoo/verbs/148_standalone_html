@@ -7,7 +7,7 @@ if (!caller_perms().wizard)
     return E_PERM;
 endif
 user = args[1];
-base_url = tostr("http://", $network.site, "/");
+base_url = tostr("https://", $network.site, "/");
 style = 0;
 "CSS for the JavaScript MOO client";
 body = {tostr("<link rel=\"stylesheet\" href=\"", base_url, "assets/moojs.css?", crypt(tostr(task_id())), "\">")};

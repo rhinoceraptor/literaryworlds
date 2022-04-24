@@ -14,5 +14,9 @@ export const extractUrl = (str: string): string =>
   containsUrl(str) ?
   ((urlRegex.exec(str) || [])[1] || '') :
   ''
+export const rewriteUrl = (str: string): string => str
+  .replace('http://', 'https://')
+  .replace(':7000', ':7443')
+
 export const removeUrl = (str: string): string => str.replace(urlRegex, '')
 

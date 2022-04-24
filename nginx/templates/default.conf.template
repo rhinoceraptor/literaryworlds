@@ -1,21 +1,55 @@
 # vim: set syntax=nginx ft=nginx
 
+include /etc/letsencrypt/options-ssl-nginx.conf;
+ssl_dhparam /etc/letsencrypt/ssl-dhparams.pem;
 js_import rewrite from conf.d/rewrite.js;
 
 server {
-  listen ${ENCORE_HTTP_PORT};
+  listen 80;
+  server_name ${DOMAIN_NAME};
+
+  # Certbot ACME challenge
+  location /.well-known/acme-challenge/ {
+    root /var/www/certbot;
+  }
+
+  # Redirect everything else to HTTPS
+  location / {
+    return 301 https://$host$request_uri;
+  }
+}
+
+# server {
+#   listen 7000;
+#   server_name ${DOMAIN_NAME};
+#
+#   location / {
+#     return 301 https://$host:7443$request_uri;
+#   }
+# }
+
+server {
+  listen ${ENCORE_PROXY_HTTP_PORT} ssl;
+  server_name ${DOMAIN_NAME};
+
+  ssl_certificate /etc/letsencrypt/live/${DOMAIN_NAME}/fullchain.pem;
+  ssl_certificate_key /etc/letsencrypt/live/${DOMAIN_NAME}/privkey.pem;
 
   # enCore dynamic content reverse proxy
   location / {
     # Rewrite all internal http:// links to https://,
-    # and rewrite all externala http:// links to go through /external-proxy/
+    # and rewrite all external http:// links to go through /external-proxy/
     js_body_filter rewrite.rewriteBodyLinks;
     proxy_pass http://${LAMBDAMOO_HOST}:${ENCORE_HTTP_PORT};
   }
 }
 
 server {
-  listen ${NGINX_PORT};
+  listen ${NGINX_PORT} ssl;
+  server_name ${DOMAIN_NAME};
+
+  ssl_certificate /etc/letsencrypt/live/${DOMAIN_NAME}/fullchain.pem;
+  ssl_certificate_key /etc/letsencrypt/live/${DOMAIN_NAME}/privkey.pem;
 
   # enCore dynamic content reverse proxy
   location / {
@@ -49,4 +83,10 @@ server {
   location /external-proxy/ {
     proxy_pass http://${UPSTREAM_PROXY_HOST}:${UPSTREAM_PROXY_PORT}/;
   }
+
+  # Certbot ACME challenge
+  location /.well-known/acme-challenge/ {
+    root /var/www/certbot;
+  }
 }
+

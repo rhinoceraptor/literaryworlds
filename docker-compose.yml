@@ -6,11 +6,13 @@ services:
       dockerfile: ./nginx/Dockerfile
       args:
         ENABLED_MODULES: njs
-        WEBSOCKET_HOST: ws://localhost/lambdamoo/websocket/
+        WEBSOCKET_HOST:
     container_name: nginx
     ports:
       - "80:80"
+      - "443:443"
       - "7000:7000"
+      - "7443:7443"
     links:
       - "moo.js:moo.js"
       - "upstream-proxy:upstream-proxy"
@@ -21,13 +23,16 @@ services:
       - "./nginx/assets/moojs.css:/webroot/assets/moojs.css"
       - "./encore:/webroot/encore"
       - "./nginx/templates:/etc/nginx/templates/"
+      - "./data/certbot/conf:/etc/letsencrypt"
+      - "./data/certbot/www:/var/www/certbot"
     environment:
       WEBSOCKET_HOST: moo.js
       WEBSOCKET_PORT: 8080
       LAMBDAMOO_HOST: lambdamoo
       ENCORE_HTTP_PORT: 7000
-      NGINX_PORT: 80
-      DOMAIN_NAME: localhost
+      ENCORE_PROXY_HTTP_PORT: 7443
+      NGINX_PORT: 443
+      DOMAIN_NAME:
       UPSTREAM_PROXY_HOST: upstream-proxy
       UPSTREAM_PROXY_PORT: 8000
       EXTERNAL_PROXY_PATH: external-proxy
@@ -41,7 +46,7 @@ services:
     environment:
       TCP_PORT: 7777
       ENCORE_HTTP_PORT: 7000
-      DOMAIN_NAME: localhost
+      DOMAIN_NAME:
   moo.js:
     build: moo.js
     container_name: moo.js
@@ -58,3 +63,12 @@ services:
       UPSTREAM_PROXY_PORT: 8000
     volumes:
       - "./moo.js/dist:/app/dist"
+  certbot:
+    image: certbot/certbot
+    container_name: certbot
+    entrypoint: "/bin/sh -c 'trap exit TERM; while :; do certbot renew; sleep 12h & wait $${!}; done;'"
+    volumes:
+      - "./data/certbot/conf:/etc/letsencrypt"
+      - "./data/certbot/www:/var/www/certbot"
+    environment:
+      DOMAIN_NAME:

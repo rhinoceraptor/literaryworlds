@@ -3,3 +3,5 @@
 encore
 telnetjs/coverage
 db
+data/certbot/conf/*
+data/certbot/www/*

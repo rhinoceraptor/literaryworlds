@@ -12,12 +12,10 @@ function rewriteBodyLinks(r, data, flags) {
     if (URL === "http://") {
       return match;
     } else if (URL.startsWith(`http://${ourDomain}`)) {
-      // return `"${URL.replace('http://', 'https://')}"`
-      return `"${URL.replace('http://', 'http://')}"`
-    } else {
-      // return `"https://${ourDomain}/${externalProxyPath}/${URL}"`
+      return `"${URL.replace('http://', 'https://').replace(':7000', ':7443')}"`
+    } else if (!URL.startsWith(`https://${ourDomain}`)) {
       var base64URL = Buffer.from(URL).toString('base64');
-      return `"http://${ourDomain}/${externalProxyPath}/${base64URL}"`
+      return `"https://${ourDomain}/${externalProxyPath}/${base64URL}"`
     }
   })
 

@@ -57,7 +57,7 @@ proc readFile {filepath} {
 editObjectProperty "#72" "port" "$env(TCP_PORT)"
 editObjectProperty "#72" "webport" "$env(ENCORE_HTTP_PORT)"
 editObjectProperty "#72" "site" "\"$env(DOMAIN_NAME)\""
-editObjectProperty "#147" "external_baseurl" "\"http://$env(DOMAIN_NAME)/encore/\""
+editObjectProperty "#147" "external_baseurl" "\"https://$env(DOMAIN_NAME)/encore/\""
 
 editObjectVerb "#147" "java_html" [readFile "verbs/147_java_html"]
 editObjectVerb "#148" "standalone_html" [readFile "verbs/148_standalone_html"]

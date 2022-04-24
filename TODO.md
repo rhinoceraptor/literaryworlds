@@ -19,4 +19,12 @@
     - [x] auto console scroll
   - [x] CSS
   - [x] Cache busting
-- [ ] Let's Encrypt
+- [x] Let's Encrypt
+
+- [ ] Bugs
+  - [x] text console not sending proper message to connect session?
+  - [x] text console not setting URL in iFrame?
+  - [x] quit doesn't work
+  - [ ] images paths broken
+  - [ ] need to customize quit verb html
+
