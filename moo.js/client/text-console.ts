@@ -28,10 +28,6 @@ export class TextConsole {
   }
 
   outputData(str: string): void {
-    console.log({
-      str,
-      containsUrl: containsUrl(str)
-    })
     if (containsUrl(str)) {
       this.enCoreIFrame?.setAttribute('src', rewriteUrl(extractUrl(str)))
       str = removeUrl(str)

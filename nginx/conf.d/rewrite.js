@@ -1,6 +1,31 @@
 var useHTTPS = process.env.USE_HTTPS === 'true'
 var ourDomain = process.env.DOMAIN_NAME
 var externalProxyPath = process.env.EXTERNAL_PROXY_PATH
+var enCoreHTTPPort = process.env.ENCORE_HTTP_PORT
+var enCoreProxyHTTPPort = process.env.ENCORE_PROXY_HTTP_PORT
+
+function pass(string) {
+  return string === 'http://'
+}
+
+function isOurURL(string) {
+  return string.startsWith(`http://${ourDomain}`)
+}
+
+function isNotOurURL(string) {
+  return !string.startsWith(`https://${ourDomain}`)
+}
+
+function rewriteToHTTPS(string) {
+  return string
+    .replace(/http:\/\//g, 'https://')
+    .replace(new RegExp(`:${enCoreHTTPPort}`, 'g'), `:${enCoreProxyHTTPPort}`)
+}
+
+function buildProxiedUrl(string) {
+  var base64URL = Buffer.from(string).toString('base64');
+  return `https://${ourDomain}/${externalProxyPath}/${base64URL}`
+}
 
 function rewriteBodyLinks(r, data, flags) {
   if (!useHTTPS) {
@@ -9,13 +34,23 @@ function rewriteBodyLinks(r, data, flags) {
 
   var httpRegex = new RegExp('"(http://.*?)"', 'gi')
   var newData = data.replace(httpRegex, function (match, URL) {
-    if (URL === "http://") {
+    if (pass(URL)) {
       return match;
-    } else if (URL.startsWith(`http://${ourDomain}`)) {
-      return `"${URL.replace('http://', 'https://').replace(':7000', ':7443')}"`
-    } else if (!URL.startsWith(`https://${ourDomain}`)) {
-      var base64URL = Buffer.from(URL).toString('base64');
-      return `"https://${ourDomain}/${externalProxyPath}/${base64URL}"`
+    } else if (isOurURL(URL)) {
+      return `"${rewriteToHTTPS(URL)}"`
+    } else if (isNotOurURL(URL)) {
+      return `"${buildProxiedUrl(URL)}"`
+    }
+  })
+
+  var httpRegex2 = new RegExp("'(http://.*?)'", 'gi')
+  newData = newData.replace(httpRegex, function (match, URL) {
+    if (pass(URL)) {
+      return match;
+    } else if (isOurURL(URL)) {
+      return `'${rewriteToHTTPS(URL)}'`
+    } else if (isNotOurURL(URL)) {
+      return `'${buildProxiedUrl(URL)}'`
     }
   })
 
