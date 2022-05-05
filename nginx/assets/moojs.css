@@ -23,7 +23,7 @@ body {
 
 .input-wrapper {
   display: flex;
-  height: 30px;
+  height: 60px;
 }
 
 #console-output {

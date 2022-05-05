@@ -19,14 +19,14 @@ server {
   }
 }
 
-# server {
-#   listen 7000;
-#   server_name ${DOMAIN_NAME};
-#
-#   location / {
-#     return 301 https://$host:7443$request_uri;
-#   }
-# }
+server {
+  listen 7000;
+  server_name ${DOMAIN_NAME};
+
+  location / {
+    return 301 https://$host:7443$request_uri;
+  }
+}
 
 server {
   listen ${ENCORE_PROXY_HTTP_PORT} ssl;
