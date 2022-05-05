@@ -35,6 +35,8 @@ server {
   ssl_certificate /etc/letsencrypt/live/${DOMAIN_NAME}/fullchain.pem;
   ssl_certificate_key /etc/letsencrypt/live/${DOMAIN_NAME}/privkey.pem;
 
+  add_header Content-Security-Policy "frame-src http://${DOMAIN_NAME}:7000 https://${DOMAIN_NAME} https://${DOMAIN_NAME}:${ENCORE_PROXY_HTTP_PORT}; style-src https://${DOMAIN_NAME} https://${DOMAIN_NAME}:${ENCORE_PROXY_HTTP_PORT} 'unsafe-inline';";
+
   # enCore dynamic content reverse proxy
   location / {
     # Rewrite all internal http:// links to https://,
@@ -50,6 +52,8 @@ server {
 
   ssl_certificate /etc/letsencrypt/live/${DOMAIN_NAME}/fullchain.pem;
   ssl_certificate_key /etc/letsencrypt/live/${DOMAIN_NAME}/privkey.pem;
+
+  add_header Content-Security-Policy "frame-src http://${DOMAIN_NAME}:7000 https://${DOMAIN_NAME} https://${DOMAIN_NAME}:${ENCORE_PROXY_HTTP_PORT}; style-src https://${DOMAIN_NAME} https://${DOMAIN_NAME}:${ENCORE_PROXY_HTTP_PORT} 'unsafe-inline';";
 
   # enCore dynamic content reverse proxy
   location / {
